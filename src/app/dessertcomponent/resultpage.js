@@ -22,10 +22,11 @@ export default function ResultPage({ handleAgain }) {
   ].filter(Boolean).length;
 
   const renderStars = () => {
-    if (matchCount === 4) return [1, 2, 3];
-    if (matchCount === 3) return [1, 2];
-    if (matchCount === 2) return [1];
-    return [];
+    const stars = [false, false, false]; // 預設三顆空心星星
+    for (let i = 0; i < matchCount; i++) {
+      stars[i-1] = true; // 根據 matchCount 把前幾顆變成實心
+    }
+    return stars;
   };
 
   return (
@@ -74,19 +75,21 @@ export default function ResultPage({ handleAgain }) {
         </div>
 
 
-          <Image className="absolute top-[8%] w-[250px] cursor-pointer" src={resultBtn} alt="resultBtn" />
+          <Image className="absolute top-[8%] w-[250px]" src={resultBtn} alt="resultBtn" />
           
           {/* 你的蛋糕 */}
           <div className="absolute top-[25%] left-[65%] translate-x-[-50%] flex flex-col items-center gap-4">
 
             {/* 星星 */}
             <div className="flex gap-2 mt-2">
-              {renderStars().map((_, index) => (
-                <Image key={index} src={star} alt="star" className="w-20" />
+              {renderStars().map((filled, index) => (
+              <Image
+                key={index}
+                src={filled ? star : noStar}
+                alt={filled ? "star" : "no star"}
+                className="w-20"
+              />
               ))}
-              {renderStars().length === 0 && (
-                <Image src={noStar} alt="no star" className="w-20" />
-              )}
             </div>
 
             {/* 你的蛋糕 */}
